@@ -10,10 +10,11 @@ function newObj(){
     obj = Object.create(constructorFn.prototype)
     // 让函数的this指向这个对象，并调用函数 
     const res = constructorFn.apply(obj,arguments)
-    //判断返回值res，如果有返回值，且返回值的类型是一个object，就回根据object生产,如果没有返回值，就会根据构造函数内部this绑定的值生成对象
+    //判断返回值res，如果有返回值，且返回值的类型是一个object，就会根据object生成,如果没有返回值，就会根据构造函数内部this绑定的值生成对象
     const flag = res && (typeof res === 'object' || typeof res === 'function')
     return flag?res:obj
 }
+//根据构造函数内部this绑定的值生成对象的形式
 function myArray(){
     this.arr = []
     myArray.prototype.push = function(val){
@@ -22,4 +23,11 @@ function myArray(){
 }
 const obj = newObj(myArray,123)
 obj.push(1)
-console.log(obj)
+console.log(obj)    //myArray { arr: [ 1 ] }
+
+//根据返回值生成对象
+function myReturn(){
+    return [1,2,3]
+}
+const obj1 = newObj(myReturn,123)
+console.log(obj1)   //[ 1, 2, 3 ]
