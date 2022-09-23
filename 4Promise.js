@@ -46,19 +46,47 @@ MyPromise.prototype.then = function(onResolved,onRejected){
   onResolved = typeof onResolved === 'function' ? onResolved : function(value){return value}
   if(onRejected)
   onRejected = typeof onRejected === 'function' ? onRejected : function(value){return value}
-  if(this.status === PENDING){
-    this.resolvedCallBacks.push(onResolved)
-    this.rejectedCallBacks.push(onRejected)
-  }
-  if(this.status === RESOLVED){
-    onResolved(this.value)
-  }
-  if(this.status === REJECTED){
-    onRejected(this.value)
-  }
+  // if(this.status === PENDING){
+  //   this.resolvedCallBacks.push(onResolved)
+  //   this.rejectedCallBacks.push(onRejected)
+  // }
+  // if(this.status === RESOLVED){
+  //   onResolved(this.value)
+  // }
+  // if(this.status === REJECTED){
+  //   onRejected(this.value)
+  // }
+
+  return new MyPromise((resolve,reject) => {
+    this.resolvedCallBacks.push((val) => {
+      try {
+        const res = onResolved(val)
+        res instanceof MyPromise ? res.then(resolve,reject):resolve(val)
+      } catch (error) {
+        reject(error)
+      }
+    })
+    this.rejectedCallBacks.push((val) => {
+      try {
+        const res = onRejected(val)
+        res instanceof MyPromise ? res.then(resolve,reject):reject(val)
+      } catch (error) {
+        reject(error)
+      }
+    })
+  })
 }
 
 const pro = new MyPromise((resolve,reject)=>{
   resolve(3)
 })
-pro.then(value=>{console.log(value)})
+pro.then(value=>{
+  console.log(value) 
+  return new MyPromise((resolve,reject)=>{
+    resolve(2)
+  })
+}).then(val=>{console.log(val)
+  return new MyPromise((resolve,reject)=>{
+    resolve(1)
+  })
+}).then(va=>console.log(va))
