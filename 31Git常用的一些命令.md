@@ -57,3 +57,8 @@ Date:   Sat Sep 24 16:01:30 2022 +0800
 
     1.rebase会把当前的commit放到公共分支的最后面，merge把当前的commit和公共分支合并在一起
     2.用merge解决完冲突后会产生一个commit，而rebase不会
+
+
+
+    <!-- git pull 和 git pull --rebase 的区别 -->
+    git pull做了两个操作分别是‘获取’和合并。所以加了rebase就是以rebase的方式进行合并分支，默认为merge。
