@@ -53,3 +53,7 @@ Date:   Sat Sep 24 16:01:30 2022 +0800
     git checkout commit id 
 
 
+    <!-- git rebase 和 git merge 的区别 -->
+
+    1.rebase会把当前的commit放到公共分支的最后面，merge把当前的commit和公共分支合并在一起
+    2.用merge解决完冲突后会产生一个commit，而rebase不会
